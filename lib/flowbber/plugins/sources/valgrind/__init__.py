@@ -46,6 +46,12 @@ class ValgrindBaseSource(Source):
             )
 
         doc = parse(infile.read_text(), force_list=('error', 'stack',))
+
+        # Safe check
+        if 'error' in doc['valgrindoutput']:
+            doc['valgrindoutput']['total_issues'] = len(doc['valgrindoutput']['error'])
+        else:
+            doc['valgrindoutput']['total_issues'] = 0
         return doc['valgrindoutput']
 
 
